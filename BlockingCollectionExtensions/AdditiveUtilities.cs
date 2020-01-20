@@ -7,6 +7,14 @@ namespace BlockingCollectionExtensions
 {
     public static class AdditiveUtilities
     {
+        /// <summary>
+        /// Transfer contents of a generic enumerable into a target blocking collection,
+        /// determine whether blocking collection should complete adding when enumerable has finished being added
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="target"></param>
+        /// <param name="source"></param>
+        /// <param name="completeAddingWhenDone"></param>
         public static void AddFromEnumerable<T>(this BlockingCollection<T> target, IEnumerable<T> source,
             bool completeAddingWhenDone)
         {
@@ -26,6 +34,15 @@ namespace BlockingCollectionExtensions
             }
         }
 
+        /// <summary>
+        /// Transfer contents arriving asynchronously in the form of an IObservable, subscribe a delegate that takes any data from the observable
+        /// and adds it to the BlockingCollection
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="target"></param>
+        /// <param name="source"></param>
+        /// <param name="completeAddingWhenDone"></param>
+        /// <returns></returns>
         public static IDisposable AddFromObservable<T>(this BlockingCollection<T> target, IObservable<T> source,
             bool completeAddingWhenDone)
         {

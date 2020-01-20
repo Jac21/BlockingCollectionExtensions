@@ -9,7 +9,7 @@ namespace BlockingCollectionsExtensions.Unit.Tests
     public class AdditiveUtilitiesTest
     {
         [Test]
-        public void BlockingCollectionsExtensions_AddFromEnumerable_CompleteAddingWhenDone_IsFalse_Success_Test()
+        public void AdditiveUtilities_AddFromEnumerable_CompleteAddingWhenDone_IsFalse_Success_Test()
         {
             // arrange
             var blockingCollection = new BlockingCollection<int>();
@@ -30,7 +30,7 @@ namespace BlockingCollectionsExtensions.Unit.Tests
         }
 
         [Test]
-        public void BlockingCollectionsExtensions_AddFromEnumerable_CompleteAddingWhenDone_IsTrue_Success_Test()
+        public void AdditiveUtilities_AddFromEnumerable_CompleteAddingWhenDone_IsTrue_Success_Test()
         {
             // arrange
             var blockingCollection = new BlockingCollection<int>();
