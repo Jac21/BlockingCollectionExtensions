@@ -2,6 +2,12 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <Authors>Jeremy Cantu</Authors>
+    <Company>Jeremy Cantu</Company>
+    <Description>📎 Utilities to aid in utilizing the ever-useful .NET structure BlockingCollection&lt;T&gt;</Description>
+    <PackageProjectUrl>https://github.com/Jac21/BlockingCollectionExtensions</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Jac21/BlockingCollectionExtensions</RepositoryUrl>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/Jac21/BlockingCollectionExtensions/master/LICENSE</PackageLicenseUrl>
   </PropertyGroup>
 
 </Project>

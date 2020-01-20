@@ -7,7 +7,7 @@ dotnet: 2.2
 script:
   - dotnet restore
   - dotnet build
-  - dotnet test BlockingCollectionExtensions.Unit.Tests/BlockingCollectionExtensions.Unit.Tests.csproj
+  - dotnet test BlockingCollectionsExtensions.Unit.Tests/BlockingCollectionsExtensions.Unit.Tests.csproj
 
 global:
   - DOTNET_SKIP_FIRST_TIME_EXPERIENCE=true
