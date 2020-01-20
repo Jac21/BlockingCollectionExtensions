@@ -8,6 +8,7 @@
     <PackageProjectUrl>https://github.com/Jac21/BlockingCollectionExtensions</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Jac21/BlockingCollectionExtensions</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Jac21/BlockingCollectionExtensions/master/LICENSE</PackageLicenseUrl>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
 </Project>
