@@ -42,7 +42,6 @@ namespace BlockingCollectionExtensions.Structures
             SyncRoot = syncRoot;
         }
 
-
         public bool TryAdd(T item)
 
         {
@@ -50,7 +49,6 @@ namespace BlockingCollectionExtensions.Structures
                 item, _millisecondsTimeout,
                 _cancellationToken);
         }
-
 
         public bool TryTake(out T item)
 
@@ -60,13 +58,11 @@ namespace BlockingCollectionExtensions.Structures
                 _cancellationToken);
         }
 
-
         public void CopyTo(T[] array, int index)
 
         {
             _collection.CopyTo(array, index);
         }
-
 
         public T[] ToArray()
 
@@ -76,7 +72,7 @@ namespace BlockingCollectionExtensions.Structures
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            return _collection.GetConsumingEnumerable().GetEnumerator();
         }
 
         IEnumerator IEnumerable.GetEnumerator()

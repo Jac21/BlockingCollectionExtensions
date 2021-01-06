@@ -6,10 +6,10 @@ using Shouldly;
 
 namespace BlockingCollectionsExtensions.Unit.Tests
 {
-    public class TransformationUtilitiesTest
+    public class TransformativeUtilitiesTest
     {
         [Test]
-        public void TransformationUtilities_ToProducerConsumerCollection_Success_Test()
+        public void TransformativeUtilities_ToProducerConsumerCollection_Success_Test()
         {
             // arrange
             var blockingCollection = new BlockingCollection<int>();

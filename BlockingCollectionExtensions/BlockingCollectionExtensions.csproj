@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard2.1</TargetFramework>
     <Authors>Jeremy Cantu</Authors>
     <Company>Jeremy Cantu</Company>
     <Description>📎 Utilities to aid in utilizing the ever-useful .NET structure BlockingCollection&lt;T&gt;</Description>

@@ -4,7 +4,7 @@ using BlockingCollectionExtensions.Structures;
 
 namespace BlockingCollectionExtensions
 {
-    public static class TransformationUtilities
+    public static class TransformativeUtilities
     {
         /// <summary>
         /// Coalesce a target blocking collection to a structure that implements the IProducerConsumerCollection interface
