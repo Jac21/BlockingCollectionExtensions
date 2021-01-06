@@ -9,6 +9,15 @@
     <RepositoryUrl>https://github.com/Jac21/BlockingCollectionExtensions</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Jac21/BlockingCollectionExtensions/master/LICENSE</PackageLicenseUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.1</Version>
+    <PackageIcon>favicon.png</PackageIcon>
   </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\media\favicon.png">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+  </ItemGroup>
 
 </Project>
