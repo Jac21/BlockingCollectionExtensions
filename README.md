@@ -33,7 +33,7 @@ public static void AddFromEnumerable<T>(this BlockingCollection<T> target, IEnum
     
 ```
 
-### Static Transformation Utilities
+### Static Transformative Utilities
 
 ```csharp
 /// <summary>
