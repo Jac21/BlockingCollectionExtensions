@@ -27,9 +27,7 @@ namespace BlockingCollectionExtensions.Structures
             CancellationToken cancellationToken, int count, bool isSynchronized, object syncRoot)
 
         {
-            if (millisecondsTimeout < -1)
-                throw new ArgumentOutOfRangeException(
-                    nameof(millisecondsTimeout));
+            if (millisecondsTimeout <= 0) throw new ArgumentOutOfRangeException(nameof(millisecondsTimeout));
 
             _collection = collection ?? throw new ArgumentNullException(nameof(collection));
 
