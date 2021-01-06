@@ -28,7 +28,6 @@ namespace BlockingCollectionExtensions.Structures
 
         {
             if (millisecondsTimeout < -1)
-
                 throw new ArgumentOutOfRangeException(
                     nameof(millisecondsTimeout));
 
@@ -37,6 +36,7 @@ namespace BlockingCollectionExtensions.Structures
             _millisecondsTimeout = millisecondsTimeout;
 
             _cancellationToken = cancellationToken;
+
             Count = count;
             IsSynchronized = isSynchronized;
             SyncRoot = syncRoot;
@@ -82,7 +82,12 @@ namespace BlockingCollectionExtensions.Structures
 
         public void CopyTo(Array array, int index)
         {
-            throw new NotImplementedException();
+            if (array == null) throw new ArgumentNullException(nameof(array));
+
+            lock (SyncRoot)
+            {
+                _collection.CopyTo((T[]) array, index);
+            }
         }
     }
 }
