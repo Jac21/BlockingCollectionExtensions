@@ -26,9 +26,10 @@ namespace BlockingCollectionsExtensions.Unit.Tests
                     null);
 
             // assert
-            producerConsumerCollection.ShouldNotBe(null);
-            producerConsumerCollection.Count.ShouldBe(count);
-            producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized);
+            producerConsumerCollection.ShouldSatisfyAllConditions(
+                () => producerConsumerCollection.ShouldNotBe(null),
+                () => producerConsumerCollection.Count.ShouldBe(count),
+                () => producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized));
         }
 
         [Test]
@@ -67,9 +68,10 @@ namespace BlockingCollectionsExtensions.Unit.Tests
             var tryAdd = producerConsumerCollection.TryAdd(collectionItem);
 
             // assert
-            producerConsumerCollection.ShouldNotBe(null);
-            producerConsumerCollection.Count.ShouldBe(count);
-            producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized);
+            producerConsumerCollection.ShouldSatisfyAllConditions(
+                () => producerConsumerCollection.ShouldNotBe(null),
+                () => producerConsumerCollection.Count.ShouldBe(count),
+                () => producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized));
 
             tryAdd.ShouldBe(true);
         }
@@ -95,9 +97,10 @@ namespace BlockingCollectionsExtensions.Unit.Tests
             var tryTake = producerConsumerCollection.TryTake(out var takenItem);
 
             // assert
-            producerConsumerCollection.ShouldNotBe(null);
-            producerConsumerCollection.Count.ShouldBe(count);
-            producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized);
+            producerConsumerCollection.ShouldSatisfyAllConditions(
+                () => producerConsumerCollection.ShouldNotBe(null),
+                () => producerConsumerCollection.Count.ShouldBe(count),
+                () => producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized));
 
             tryAdd.ShouldBe(true);
 
@@ -128,9 +131,10 @@ namespace BlockingCollectionsExtensions.Unit.Tests
             producerConsumerCollection.CopyTo(array, 0);
 
             // assert
-            producerConsumerCollection.ShouldNotBe(null);
-            producerConsumerCollection.Count.ShouldBe(count);
-            producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized);
+            producerConsumerCollection.ShouldSatisfyAllConditions(
+                () => producerConsumerCollection.ShouldNotBe(null),
+                () => producerConsumerCollection.Count.ShouldBe(count),
+                () => producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized));
 
             tryAdd.ShouldBe(true);
 
@@ -159,9 +163,10 @@ namespace BlockingCollectionsExtensions.Unit.Tests
             var array = producerConsumerCollection.ToArray();
 
             // assert
-            producerConsumerCollection.ShouldNotBe(null);
-            producerConsumerCollection.Count.ShouldBe(count);
-            producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized);
+            producerConsumerCollection.ShouldSatisfyAllConditions(
+                () => producerConsumerCollection.ShouldNotBe(null),
+                () => producerConsumerCollection.Count.ShouldBe(count),
+                () => producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized));
 
             tryAdd.ShouldBe(true);
 
