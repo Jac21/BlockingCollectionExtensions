@@ -12,7 +12,7 @@
 Find it on [nuget](https://www.nuget.org/packages/BlockingCollectionExtensions/)!
 
 ```
-PM> Install-Package BlockingCollectionExtensions -Version 1.0.1
+PM> Install-Package BlockingCollectionExtensions -Version 6.0.0
 ```
 
 ## API 
