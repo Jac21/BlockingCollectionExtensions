@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
     <Authors>Jeremy Cantu</Authors>
     <Company>Jeremy Cantu</Company>
     <Description>📎 Utilities to aid in utilizing the ever-useful .NET structure BlockingCollection&lt;T&gt;</Description>
@@ -9,10 +8,16 @@
     <RepositoryUrl>https://github.com/Jac21/BlockingCollectionExtensions</RepositoryUrl>
     <PackageLicenseUrl>https://raw.githubusercontent.com/Jac21/BlockingCollectionExtensions/master/LICENSE</PackageLicenseUrl>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackOnBuild>true</PackOnBuild>
     <Version>1.0.1</Version>
     <PackageIcon>favicon.png</PackageIcon>
     <LangVersion>default</LangVersion>
-    <PackageVersion>6.0.0</PackageVersion>
+    <PackageVersion>6.0.1</PackageVersion>
+    <TargetFrameworks>net6.0;netstandard2.1</TargetFrameworks>   
+    
+    <DebugType>embedded</DebugType>
+    <EnablePackageValidation>true</EnablePackageValidation>
+    <PackageValidationBaselineVersion>6.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <ItemGroup>
