@@ -2,7 +2,7 @@
 
 [![NuGet Status](http://img.shields.io/nuget/v/BlockingCollectionExtensions.svg?style=flat)](https://www.nuget.org/packages/BlockingCollectionExtensions/)
 [![MIT Licence](https://badges.frapsoft.com/os/mit/mit.svg?v=103)](https://opensource.org/licenses/mit-license.php)
-[![Build Status](https://travis-ci.com/Jac21/BlockingCollectionExtensions.svg?branch=master)](https://travis-ci.com/Jac21/BlockingCollectionExtensions)
+[![Build Status](https://app.travis-ci.com/Jac21/BlockingCollectionExtensions.svg?token=C2g4zraa9aMphS3q4ssZ&branch=master)](https://app.travis-ci.com/Jac21/BlockingCollectionExtensions)
 [![donate](https://img.shields.io/badge/%24-Buy%20me%20a%20coffee-ff69b4.svg?style=flat)](https://www.buymeacoffee.com/jac21) 
 
 📎 Utilities to aid in utilizing the ever-useful .NET structure BlockingCollection&lt;T>
