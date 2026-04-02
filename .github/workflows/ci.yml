@@ -32,3 +32,9 @@ jobs:
 
       - name: Pack
         run: dotnet pack BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --no-build -p:EnablePackageValidation=true -o artifacts
+
+      - name: Upload package artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: packages
+          path: artifacts/*
