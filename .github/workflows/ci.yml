@@ -31,7 +31,7 @@ jobs:
         run: dotnet build BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --framework netstandard2.1 --no-restore
 
       - name: Test
-        run: dotnet test BlockingCollectionExtensions.sln --configuration Release --no-build --framework net8.0
+        run: dotnet test BlockingCollectionsExtensions.Unit.Tests/BlockingCollectionsExtensions.Unit.Tests.csproj --configuration Release --no-build --framework net8.0
 
       - name: Pack
         run: dotnet pack BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --no-build -p:EnablePackageValidation=true -o artifacts
