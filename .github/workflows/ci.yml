@@ -24,11 +24,14 @@ jobs:
       - name: Restore
         run: dotnet restore BlockingCollectionExtensions.sln
 
-      - name: Build
-        run: dotnet build BlockingCollectionExtensions.sln --configuration Release --no-restore
+      - name: Build net8.0
+        run: dotnet build BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --framework net8.0 --no-restore
+
+      - name: Build netstandard2.1
+        run: dotnet build BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --framework netstandard2.1 --no-restore
 
       - name: Test
         run: dotnet test BlockingCollectionExtensions.sln --configuration Release --no-build
 
       - name: Pack
-        run: dotnet pack BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --no-build -o artifacts
+        run: dotnet pack BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --no-build -p:EnablePackageValidation=true -o artifacts

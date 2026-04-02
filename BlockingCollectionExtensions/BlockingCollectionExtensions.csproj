@@ -18,10 +18,11 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
-    <EmbedUntrackedSources>true</EmbedUntrackedSources>
+    <EmbedUntrackedSources>false</EmbedUntrackedSources>
     <PackageReleaseNotes>Modernized packaging, improved APIs, async enumerable support, and updated CI/test coverage.</PackageReleaseNotes>
-    <DebugType>embedded</DebugType>
-    <EnablePackageValidation>true</EnablePackageValidation>
+    <DebugType>portable</DebugType>
+    <EnablePackageValidation Condition="'$(CI)' == 'true'">true</EnablePackageValidation>
+    <EnablePackageValidation Condition="'$(CI)' != 'true'">false</EnablePackageValidation>
     <PackageValidationBaselineVersion>6.0.1</PackageValidationBaselineVersion>
   </PropertyGroup>
 
