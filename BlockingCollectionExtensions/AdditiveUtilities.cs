@@ -1,63 +1,119 @@
-﻿using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
+﻿using System.Collections.Concurrent;
 using BlockingCollectionExtensions.Structures;
 
-namespace BlockingCollectionExtensions
+namespace BlockingCollectionExtensions;
+
+/// <summary>
+/// Utility methods for adding data to <see cref="BlockingCollection{T}"/> instances.
+/// </summary>
+public static class AdditiveUtilities
 {
-    public static class AdditiveUtilities
+    /// <summary>
+    /// Transfer contents of an enumerable into a target blocking collection.
+    /// </summary>
+    public static void AddFromEnumerable<T>(
+        this BlockingCollection<T> target,
+        IEnumerable<T> source,
+        bool completeAddingWhenDone = false)
     {
-        /// <summary>
-        /// Transfer contents of a generic enumerable into a target blocking collection,
-        /// determine whether blocking collection should complete adding when enumerable has finished being added
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="target"></param>
-        /// <param name="source"></param>
-        /// <param name="completeAddingWhenDone"></param>
-        public static void AddFromEnumerable<T>(this BlockingCollection<T> target, IEnumerable<T> source,
-            bool completeAddingWhenDone)
+        AddFromEnumerable(target, source, CancellationToken.None, completeAddingWhenDone);
+    }
+
+    /// <summary>
+    /// Transfer contents of an enumerable into a target blocking collection with cancellation support.
+    /// </summary>
+    public static void AddFromEnumerable<T>(
+        this BlockingCollection<T> target,
+        IEnumerable<T> source,
+        CancellationToken cancellationToken,
+        bool completeAddingWhenDone = false)
+    {
+        if (target is null)
         {
-            try
-            {
-                foreach (var item in source)
-                {
-                    target.Add(item);
-                }
-            }
-            finally
-            {
-                if (completeAddingWhenDone)
-                {
-                    target.CompleteAdding();
-                }
-            }
+            throw new ArgumentNullException(nameof(target));
         }
 
-        /// <summary>
-        /// Transfer contents arriving asynchronously in the form of an IObservable, subscribe a delegate that takes any data from the observable
-        /// and adds it to the BlockingCollection
-        /// </summary>
-        /// <typeparam name="T"></typeparam>
-        /// <param name="target"></param>
-        /// <param name="source"></param>
-        /// <param name="completeAddingWhenDone"></param>
-        /// <returns></returns>
-        public static IDisposable AddFromObservable<T>(this BlockingCollection<T> target, IObservable<T> source,
-            bool completeAddingWhenDone)
+        if (source is null)
         {
-            return source.Subscribe(new DelegateBasedObserver<T>
-            (
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        try
+        {
+            foreach (var item in source)
+            {
+                cancellationToken.ThrowIfCancellationRequested();
+                target.Add(item, cancellationToken);
+            }
+        }
+        finally
+        {
+            CompleteAddingIfRequested(target, completeAddingWhenDone);
+        }
+    }
+
+    /// <summary>
+    /// Transfer contents from an async enumerable into a target blocking collection.
+    /// </summary>
+    public static async Task AddFromAsyncEnumerable<T>(
+        this BlockingCollection<T> target,
+        IAsyncEnumerable<T> source,
+        CancellationToken cancellationToken = default,
+        bool completeAddingWhenDone = false)
+    {
+        if (target is null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
+        if (source is null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        try
+        {
+            await foreach (var item in source.WithCancellation(cancellationToken).ConfigureAwait(false))
+            {
+                target.Add(item, cancellationToken);
+            }
+        }
+        finally
+        {
+            CompleteAddingIfRequested(target, completeAddingWhenDone);
+        }
+    }
+
+    /// <summary>
+    /// Subscribe to an observable and add received values to a blocking collection.
+    /// </summary>
+    public static IDisposable AddFromObservable<T>(
+        this BlockingCollection<T> target,
+        IObservable<T> source,
+        bool completeAddingWhenDone = false)
+    {
+        if (target is null)
+        {
+            throw new ArgumentNullException(nameof(target));
+        }
+
+        if (source is null)
+        {
+            throw new ArgumentNullException(nameof(source));
+        }
+
+        return source.Subscribe(
+            new DelegateBasedObserver<T>(
                 target.Add,
-                error =>
-                {
-                    if (completeAddingWhenDone) target.CompleteAdding();
-                },
-                () =>
-                {
-                    if (completeAddingWhenDone) target.CompleteAdding();
-                }
-            ));
+                _ => CompleteAddingIfRequested(target, completeAddingWhenDone),
+                () => CompleteAddingIfRequested(target, completeAddingWhenDone)));
+    }
+
+    private static void CompleteAddingIfRequested<T>(BlockingCollection<T> target, bool completeAddingWhenDone)
+    {
+        if (completeAddingWhenDone && !target.IsAddingCompleted)
+        {
+            target.CompleteAdding();
         }
     }
 }

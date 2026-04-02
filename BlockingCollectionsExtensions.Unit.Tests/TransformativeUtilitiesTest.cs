@@ -6,172 +6,109 @@ using BlockingCollectionExtensions;
 using NUnit.Framework;
 using Shouldly;
 
-namespace BlockingCollectionsExtensions.Unit.Tests
+namespace BlockingCollectionsExtensions.Unit.Tests;
+
+public class TransformativeUtilitiesTest
 {
-    public class TransformativeUtilitiesTest
+    [Test]
+    public void TransformativeUtilities_ToProducerConsumerCollection_Success_Test()
     {
-        [Test]
-        public void TransformativeUtilities_ToProducerConsumerCollection_Success_Test()
-        {
-            // arrange
-            var blockingCollection = new BlockingCollection<int>();
+        var blockingCollection = new BlockingCollection<int>();
 
-            const int count = 1000;
+        var producerConsumerCollection =
+            blockingCollection.ToProducerConsumerCollection(TimeSpan.FromSeconds(1), CancellationToken.None);
 
-            const bool isSynchronized = true;
+        producerConsumerCollection.ShouldSatisfyAllConditions(
+            () => producerConsumerCollection.ShouldNotBeNull(),
+            () => producerConsumerCollection.Count.ShouldBe(0),
+            () => producerConsumerCollection.IsSynchronized.ShouldBeFalse());
+    }
 
-            // act
-            var producerConsumerCollection =
-                blockingCollection.ToProducerConsumerCollection(1000, CancellationToken.None, count, isSynchronized,
-                    null);
+    [Test]
+    public void TransformativeUtilities_ToProducerConsumerCollection_Timeout_Exception_Test()
+    {
+        var blockingCollection = new BlockingCollection<int>();
 
-            // assert
-            producerConsumerCollection.ShouldSatisfyAllConditions(
-                () => producerConsumerCollection.ShouldNotBe(null),
-                () => producerConsumerCollection.Count.ShouldBe(count),
-                () => producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized));
-        }
+        Should.Throw<ArgumentOutOfRangeException>(
+            () => blockingCollection.ToProducerConsumerCollection(TimeSpan.Zero, CancellationToken.None));
+    }
 
-        [Test]
-        public void TransformativeUtilities_ToProducerConsumerCollection_Timeout_Exception_Test()
-        {
-            // arrange
-            var blockingCollection = new BlockingCollection<int>();
+    [Test]
+    public void TransformativeUtilities_ToProducerConsumerCollection_TryAdd_Success_Test()
+    {
+        var blockingCollection = new BlockingCollection<int>();
+        const int collectionItem = 0;
 
-            const int count = 1000;
+        var producerConsumerCollection =
+            blockingCollection.ToProducerConsumerCollection(TimeSpan.FromSeconds(1), CancellationToken.None);
 
-            const bool isSynchronized = true;
+        var tryAdd = producerConsumerCollection.TryAdd(collectionItem);
 
-            // act
-            // assert
-            Assert.Throws<ArgumentOutOfRangeException>(() => blockingCollection.ToProducerConsumerCollection(0,
-                CancellationToken.None, count, isSynchronized,
-                null));
-        }
+        producerConsumerCollection.Count.ShouldBe(1);
+        tryAdd.ShouldBeTrue();
+    }
 
-        [Test]
-        public void TransformativeUtilities_ToProducerConsumerCollection_TryAdd_Success_Test()
-        {
-            // arrange
-            var blockingCollection = new BlockingCollection<int>();
-            const int collectionItem = 0;
+    [Test]
+    public void TransformativeUtilities_ToProducerConsumerCollection_TryAdd_TryTake_Success_Test()
+    {
+        var blockingCollection = new BlockingCollection<int>();
+        const int collectionItem = 0;
 
-            const int count = 1000;
+        var producerConsumerCollection =
+            blockingCollection.ToProducerConsumerCollection(TimeSpan.FromSeconds(1), CancellationToken.None);
 
-            const bool isSynchronized = true;
+        var tryAdd = producerConsumerCollection.TryAdd(collectionItem);
+        var tryTake = producerConsumerCollection.TryTake(out var takenItem);
 
-            var producerConsumerCollection =
-                blockingCollection.ToProducerConsumerCollection(1000, CancellationToken.None, count, isSynchronized,
-                    null);
+        tryAdd.ShouldBeTrue();
+        tryTake.ShouldBeTrue();
+        takenItem.ShouldBe(collectionItem);
+        producerConsumerCollection.Count.ShouldBe(0);
+    }
 
-            // act 
-            var tryAdd = producerConsumerCollection.TryAdd(collectionItem);
+    [Test]
+    public void TransformativeUtilities_ToProducerConsumerCollection_TryAdd_CopyTo_Success_Test()
+    {
+        var blockingCollection = new BlockingCollection<int>();
+        const int collectionItem = 0;
 
-            // assert
-            producerConsumerCollection.ShouldSatisfyAllConditions(
-                () => producerConsumerCollection.ShouldNotBe(null),
-                () => producerConsumerCollection.Count.ShouldBe(count),
-                () => producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized));
+        var producerConsumerCollection =
+            blockingCollection.ToProducerConsumerCollection(TimeSpan.FromSeconds(1), CancellationToken.None);
 
-            tryAdd.ShouldBe(true);
-        }
+        producerConsumerCollection.TryAdd(collectionItem).ShouldBeTrue();
 
-        [Test]
-        public void TransformativeUtilities_ToProducerConsumerCollection_TryAdd_TryTake_Success_Test()
-        {
-            // arrange
-            var blockingCollection = new BlockingCollection<int>();
-            const int collectionItem = 0;
+        var array = new int[1];
+        producerConsumerCollection.CopyTo(array, 0);
 
-            const int count = 1000;
+        array.ShouldNotBeNull();
+        array.FirstOrDefault().ShouldBe(collectionItem);
+    }
 
-            const bool isSynchronized = true;
+    [Test]
+    public void TransformativeUtilities_ToProducerConsumerCollection_TryAdd_ToArray_Success_Test()
+    {
+        var blockingCollection = new BlockingCollection<int>();
+        const int collectionItem = 0;
 
-            var producerConsumerCollection =
-                blockingCollection.ToProducerConsumerCollection(1000, CancellationToken.None, count, isSynchronized,
-                    null);
+        var producerConsumerCollection =
+            blockingCollection.ToProducerConsumerCollection(TimeSpan.FromSeconds(1), CancellationToken.None);
 
-            var tryAdd = producerConsumerCollection.TryAdd(collectionItem);
+        producerConsumerCollection.TryAdd(collectionItem).ShouldBeTrue();
 
-            // act 
-            var tryTake = producerConsumerCollection.TryTake(out var takenItem);
+        var array = producerConsumerCollection.ToArray();
 
-            // assert
-            producerConsumerCollection.ShouldSatisfyAllConditions(
-                () => producerConsumerCollection.ShouldNotBe(null),
-                () => producerConsumerCollection.Count.ShouldBe(count),
-                () => producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized));
+        array.ShouldNotBeNull();
+        array.FirstOrDefault().ShouldBe(collectionItem);
+    }
 
-            tryAdd.ShouldBe(true);
+    [Test]
+    public void TransformativeUtilities_AsProducerConsumerCollection_Success_Test()
+    {
+        var blockingCollection = new BlockingCollection<int>();
 
-            tryTake.ShouldBe(true);
-            takenItem.ShouldBe(collectionItem);
-        }
+        var producerConsumerCollection =
+            blockingCollection.AsProducerConsumerCollection(TimeSpan.FromMilliseconds(100));
 
-        [Test]
-        public void TransformativeUtilities_ToProducerConsumerCollection_TryAdd_CopyTo_Success_Test()
-        {
-            // arrange
-            var blockingCollection = new BlockingCollection<int>();
-            const int collectionItem = 0;
-
-            const int count = 1000;
-
-            const bool isSynchronized = true;
-
-            var producerConsumerCollection =
-                blockingCollection.ToProducerConsumerCollection(1000, CancellationToken.None, count, isSynchronized,
-                    null);
-
-            var tryAdd = producerConsumerCollection.TryAdd(collectionItem);
-
-            // act
-            var array = new int[count];
-
-            producerConsumerCollection.CopyTo(array, 0);
-
-            // assert
-            producerConsumerCollection.ShouldSatisfyAllConditions(
-                () => producerConsumerCollection.ShouldNotBe(null),
-                () => producerConsumerCollection.Count.ShouldBe(count),
-                () => producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized));
-
-            tryAdd.ShouldBe(true);
-
-            array.ShouldNotBeNull();
-            array.FirstOrDefault().ShouldBe(collectionItem);
-        }
-
-        [Test]
-        public void TransformativeUtilities_ToProducerConsumerCollection_TryAdd_ToArray_Success_Test()
-        {
-            // arrange
-            var blockingCollection = new BlockingCollection<int>();
-            const int collectionItem = 0;
-
-            const int count = 1000;
-
-            const bool isSynchronized = true;
-
-            var producerConsumerCollection =
-                blockingCollection.ToProducerConsumerCollection(1000, CancellationToken.None, count, isSynchronized,
-                    null);
-
-            var tryAdd = producerConsumerCollection.TryAdd(collectionItem);
-
-            // act
-            var array = producerConsumerCollection.ToArray();
-
-            // assert
-            producerConsumerCollection.ShouldSatisfyAllConditions(
-                () => producerConsumerCollection.ShouldNotBe(null),
-                () => producerConsumerCollection.Count.ShouldBe(count),
-                () => producerConsumerCollection.IsSynchronized.ShouldBe(isSynchronized));
-
-            tryAdd.ShouldBe(true);
-
-            array.ShouldNotBeNull();
-            array.FirstOrDefault().ShouldBe(collectionItem);
-        }
+        producerConsumerCollection.ShouldNotBeNull();
     }
 }
