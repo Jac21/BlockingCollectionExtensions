@@ -11,8 +11,8 @@
     <PackageTags>blockingcollection;producer-consumer;collections;async;threading</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageIcon>favicon.png</PackageIcon>
-    <PackageVersion>7.0.0</PackageVersion>
-    <Version>7.0.0</Version>
+    <PackageVersion>7.0.1</PackageVersion>
+    <Version>7.0.1</Version>
     <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
