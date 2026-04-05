@@ -1,15 +1,22 @@
-name: CI
+name: Release
 
 on:
+  workflow_dispatch:
+    inputs:
+      publish_to_nuget:
+        description: Publish packages to NuGet
+        required: true
+        default: false
+        type: boolean
   push:
-    branches:
-      - main
-      - master
-  pull_request:
+    tags:
+      - "v*.*.*"
 
 jobs:
-  build-test-pack:
+  release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
 
     steps:
       - name: Checkout
@@ -33,8 +40,22 @@ jobs:
       - name: Build netstandard2.1
         run: dotnet build BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --framework netstandard2.1 --no-restore
 
+      - name: Pack
+        run: dotnet pack BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --no-build -p:EnablePackageValidation=true -o artifacts
+
       - name: Upload package artifacts
         uses: actions/upload-artifact@v4
         with:
-          name: packages
+          name: release-packages
           path: artifacts/*
+
+      - name: Publish to NuGet
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.publish_to_nuget
+        env:
+          NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}
+        run: |
+          test -n "$NUGET_API_KEY"
+          dotnet nuget push "artifacts/*.nupkg" \
+            --api-key "$NUGET_API_KEY" \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
