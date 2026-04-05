@@ -11,19 +11,19 @@
     <PackageTags>blockingcollection;producer-consumer;collections;async;threading</PackageTags>
     <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
     <PackageIcon>favicon.png</PackageIcon>
-    <PackageVersion>7.0.0</PackageVersion>
-    <Version>7.0.0</Version>
+    <PackageVersion>7.0.1</PackageVersion>
+    <Version>7.0.1</Version>
     <TargetFrameworks>net8.0;netstandard2.1</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>false</EmbedUntrackedSources>
-    <PackageReleaseNotes>Modernized packaging, improved APIs, async enumerable support, and updated CI/test coverage.</PackageReleaseNotes>
+    <PackageReleaseNotes>Added a dedicated GitHub release workflow and improved the packaging/release pipeline.</PackageReleaseNotes>
     <DebugType>portable</DebugType>
     <EnablePackageValidation Condition="'$(CI)' == 'true'">true</EnablePackageValidation>
     <EnablePackageValidation Condition="'$(CI)' != 'true'">false</EnablePackageValidation>
-    <PackageValidationBaselineVersion>6.0.1</PackageValidationBaselineVersion>
+    <PackageValidationBaselineVersion>7.0.0</PackageValidationBaselineVersion>
   </PropertyGroup>
 
   <ItemGroup>
