@@ -1,0 +1,43 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: |
+            8.0.x
+
+      - name: Restore
+        run: dotnet restore BlockingCollectionExtensions.sln
+
+      - name: Build net8.0
+        run: dotnet build BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --framework net8.0 --no-restore
+
+      - name: Build netstandard2.1
+        run: dotnet build BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --framework netstandard2.1 --no-restore
+
+      - name: Pack
+        run: dotnet pack BlockingCollectionExtensions/BlockingCollectionExtensions.csproj --configuration Release --no-build -p:EnablePackageValidation=true -o artifacts
+
+      - name: Publish packages to NuGet
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: dotnet nuget push "./artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Upload release artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: release-packages
+          path: artifacts/*
