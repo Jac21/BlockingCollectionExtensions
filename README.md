@@ -12,7 +12,7 @@ Helpers and adapters for working with `BlockingCollection<T>` in modern .NET app
 Find it on [nuget](https://www.nuget.org/packages/BlockingCollectionExtensions/)!
 
 ```powershell
-PM> Install-Package BlockingCollectionExtensions -Version 7.0.0
+PM> Install-Package BlockingCollectionExtensions -Version 7.0.1
 ```
 
 ## What's New
